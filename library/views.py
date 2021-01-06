@@ -18,4 +18,8 @@ def params(request):
 
 
 def regex(request, mesec, godina):
-    return HttpResponse('Godina: '+ godina + ', Mesec'+ mesec)
+    return HttpResponse('Godina: '+ godina + ', Mesec: '+ mesec)
+
+
+def hello(request):
+    return render(request, 'library/hello.html')
