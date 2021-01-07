@@ -1,25 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from .models import Book
+
 
 def index(request):
-    return HttpResponse('Zdravo !')
+    if not request.user.is_authenticated:
+        return render(request, 'library/index.html', {'page_title': 'Library app'})
+    else:
+        return redirect('library_baza:books')
 
 
-def broj(request, br=0):
-    return HttpResponse('Broj: '+ str(br))
+def books(request):
+    tmp = Book.objects.all()
+    return render(request, 'books.html', {'books': tmp})
 
 
-def rec(request, rec):
-    return HttpResponse('Rec je: '+ rec)
+def book(request, id):
+    return None
 
 
-def params(request):
-    return HttpResponse('Params: '+str([str(k)+': '+str(v) for k, v in request.GET.items()]))
+def edit(request, id):
+    return None
 
 
-def regex(request, mesec, godina):
-    return HttpResponse('Godina: '+ godina + ', Mesec: '+ mesec)
-
-
-def hello(request):
-    return render(request, 'library/hello.html')
+def new(request):
+    return None
