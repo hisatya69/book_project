@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{% url 'library_baza:books' %}">
+    <a class="navbar-brand" href="{% url 'library:books' %}">
         <img src="{% static 'img/rocket.png' %}" width="30" height="30" class="d-inline-block align-top" alt="logo"/>
         LibraryApp
     </a>
@@ -9,9 +9,9 @@
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
             {% if not perms.library.add_book %}
-                <a class="nav-link disabled" href="{% url 'library_baza:new' %}">New book</a>
+                <a class="nav-link disabled" href="{% url 'library:new' %}">New book</a>
             {% else %}
-                <a class="nav-link" href="{% url 'library_baza:new' %}">New book</a>
+                <a class="nav-link" href="{% url 'library:new' %}">New book</a>
             {% endif %}
         </li>
     </ul>
