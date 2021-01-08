@@ -26,7 +26,9 @@ def comment_view(request):
 @login_required()
 def book(request, id):
     tmp = get_object_or_404(Book, id=id)
-    return render(request, 'library/book.html', {'book': tmp, 'page_title': tmp.title})
+    tmp1 = tmp.comment_set.all()
+    print(tmp1)
+    return render(request, 'library/book.html', {'book': tmp, 'page_title': tmp.title, 'comments': tmp1})
 
 @permission_required('library.change_book')
 def edit(request, id):

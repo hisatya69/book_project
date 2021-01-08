@@ -36,12 +36,9 @@
         </div>
 
         <div class="card-body">
-                {% for book in books %}
-                    <h2>{{ book.content }}</h2>
-                    {% for comment in book.comment_set.all %}
-                        <h4>{{comment.content}}</h4>
-                    {% endfor %}
-                {% endfor %}
+            {% for comment in comments %}
+                <h4>{{comment.content}}</h4>
+            {% endfor %}
         </div>
 
     </div>

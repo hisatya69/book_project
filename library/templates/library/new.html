@@ -10,7 +10,8 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="{{ form.title.id_for_label }}">{{ form.title.label_tag }}</label>
-            <input type="text" class="form-control" id="{{ form.title.id_for_label }}" name="{{ form.title.name }}">
+            <input type="text" class="form-control" id="{{ form.title.id_for_label }}" name="{{ form.title.name }} " maxlength="40" required>
+            {{form.title}}
             {% if form.title.errors %}
                 <div class="alert alert-danger">
                     <ul style="text-align: left">
