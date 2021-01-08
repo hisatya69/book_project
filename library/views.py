@@ -20,6 +20,9 @@ def books(request):
     tmp = Book.objects.all()
     return render(request, 'library/books.html', {'books': tmp})
 
+def comment_view(request):
+    return render(request, 'library/book.html', {'books': Book.object.all()})
+
 @login_required()
 def book(request, id):
     tmp = get_object_or_404(Book, id=id)
@@ -43,7 +46,7 @@ def edit(request, id):
         form = BookForm(instance=a)
         return render(request, 'library/edit.html', {'form': form, 'id': id})
 
-@permission_required('demo_app.add_article')
+@permission_required('library.add_book')
 def new(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
