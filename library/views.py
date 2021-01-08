@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Book, Comment
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, permission_required
-#from .forms import BookForm, CommentForm
+from .forms import BookForm, CommentForm
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from .forms import RegisterForm
@@ -20,17 +20,50 @@ def books(request):
     tmp = Book.objects.all()
     return render(request, 'library/books.html', {'books': tmp})
 
-
+@login_required()
 def book(request, id):
-    return None
+    tmp = get_object_or_404(Book, id=id)
+    return render(request, 'library/book.html', {'book': tmp, 'page_title': tmp.title})
 
-
+@permission_required('library.change_book')
 def edit(request, id):
-    return None
+    if request.method == 'POST':
+        form = BookForm(request.POST)
 
+        if form.is_valid():
+            a = Book.objects.get(id=id)
+            a.title = form.cleaned_data['title']
+            a.content = form.cleaned_data['content']
+            a.save()
+            return redirect('library:books')
+        else:
+            return render(request, 'library/edit.html', {'form': form, 'id': id})
+    else:
+        a = Book.objects.get(id=id)
+        form = BookForm(instance=a)
+        return render(request, 'library/edit.html', {'form': form, 'id': id})
 
+@permission_required('demo_app.add_article')
 def new(request):
-    return None
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+
+        if form.is_valid():
+            a = Book(title=form.cleaned_data['title'], content=form.cleaned_data['content'], owner=request.user)
+            a.save()
+            return redirect('library:books')
+        else:
+            return render(request, 'library/new.html', {'form': form})
+    else:
+        form = BookForm()
+        return render(request, 'library/new.html', {'form': form})
+
+
+@permission_required('library.delete_book')
+def delete(request, id):
+    Book.objects.filter(id=id).delete()
+    tmp = Book.objects.all()
+    return render(request, 'library/books.html', {'books': tmp})
 
 
 def user_register(request):
@@ -80,3 +113,5 @@ def user_register(request):
         form = RegisterForm()
 
     return render(request, template, {'form': form})
+
+
